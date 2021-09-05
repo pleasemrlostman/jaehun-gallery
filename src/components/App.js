@@ -5,14 +5,25 @@ import { authService } from "fbase";
 
 function App() {
     const [firstInit, setFirstInit] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    console.log(isLoggedIn);
+    const [userObj, setUserObj] = useState(null);
+    const refreshUser = () => {
+        const user = authService.currentUser;
+        setUserObj({
+            uid: user.uid,
+            displayName: user.displayName,
+            updateProfile: (args) => user.updateProfile(args),
+        });
+    };
     useEffect(() => {
         authService.onAuthStateChanged((user) => {
             if (user) {
-                setIsLoggedIn(user);
+                setUserObj({
+                    uid: user.uid,
+                    displayName: user.displayName,
+                    updateProfile: (args) => user.updateProfile(args),
+                });
             } else {
-                setIsLoggedIn(false);
+                setUserObj(false);
             }
             setFirstInit(true);
         });
@@ -20,7 +31,11 @@ function App() {
     return (
         <div className="App">
             {firstInit ? (
-                <AppRouter isLoggedIn={isLoggedIn} />
+                <AppRouter
+                    isLoggedIn={Boolean(userObj)}
+                    userObj={userObj}
+                    refreshUser={refreshUser}
+                />
             ) : (
                 <LoadingSpinner />
             )}

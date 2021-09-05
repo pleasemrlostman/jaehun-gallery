@@ -77,7 +77,7 @@ const Auth = () => {
                     placeholder="비밀번호를 입력해주세요"
                 />
                 <input
-                    className="border border-gray-500 w-full mb-3 p-2 rounded-lg"
+                    className="border text-white bg-blue-600  w-full mb-3 p-2 rounded-lg"
                     type="submit"
                     value={newAccount ? "회원가입" : "로그인"}
                 />
